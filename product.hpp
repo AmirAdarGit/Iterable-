@@ -7,19 +7,19 @@
 //NameSpace for a Tasks
 namespace itertools {
 
-    bool flag = false;
-    template <typename T, typename E> 
+    bool temp = false;
+    template <typename T1, typename T2> 
     class product {
     
     private: // private variables and functions
-        T iterable_A;
-        E iterable_B;
+        T1 iterable_A;
+        T2 iterable_B;
 
     public:
-        product(T start, E end) :  iterable_A(start), iterable_B(end) {
-              flag = false;
+        product(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {
+              temp = false;
               if(!(end.begin() != end.end())) 
-              flag = true;
+              temp = true;
             }
         
         
@@ -29,17 +29,17 @@ namespace itertools {
             auto end() const {
               return iterator<decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end());
              }
-    flaglate <typename C_1, typename C_2>
+    template <typename C1, typename C2>
         class iterator {
 
         private:
-            C_1 iter_A; // iterator A
-            C_2 iter_B; // iterator B
-            C_2 save_position_B;
+            C1 iter_A; // iterator A
+            C2 iter_B; // iterator B
+            C2 save_position_B;
               bool sauv_index;
 
         public:
-            iterator(C_1 itA , C_2 itB): iter_A(itA) , iter_B(itB) , save_position_B(iter_B),sauv_index(false) {}
+            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB) , save_position_B(iter_B),sauv_index(false) {}
 
          
               iterator& operator++() {
@@ -64,7 +64,7 @@ namespace itertools {
                   ++iter_A;
                   sauv_index = false;
                 }
-                return (iter_A != other.iter_A && !flag);
+                return (iter_A != other.iter_A && !temp);
               }
 
 
