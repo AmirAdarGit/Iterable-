@@ -2,12 +2,19 @@
 #include <vector>
 #include <cmath>
 
+
+
 namespace itertools {
+
+    
+
+
 template <typename Iter>
 class powerset {
 
 private:
 Iter Iter_a;
+
 public:
 powerset(Iter value) : Iter_a(value) {}
 

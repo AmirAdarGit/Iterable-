@@ -1,72 +1,67 @@
-#include <iterator>
-#include <iostream>
 #pragma once
 
-using namespace std;
+#include <iterator>
+#include<iostream>
 
-namespace itertools{
+namespace itertools
+{
+template <class T>
+class range
+{
 
-  template <class T>
-  class range{
-
-  T A; // start point
-  T B; // end point
-
-  public:
-    range(T a,T b) {
-      A = a;
-      B = b;
-    }
-
-    class iterator{
-    public :
-
-    T value; // "now" value
-
-    iterator(T val) : value(val){}
-
-    iterator& operator++() // advaced value
+    T _start; // __starting point
+    T _end;   // stopping point.
+   
+    class iterator
     {
-        ++value;
-        return *this;
-    }
 
-    bool operator== (range::iterator const & temp) const
+    public:
+        T value;
+
+        //constructor
+        iterator(T v) : value(v){}
+
+        // operators
+        bool operator!=(range::iterator const &other) const
+        { 
+            return value != (other.value);
+        }
+
+    bool operator== (range::iterator const &other) const
     {
-       return value == temp.value;
+       return value == other.value;
 
      }
-    bool operator!= (range::iterator const & temp) const
-    {
-       return value != temp.value;
+        const T operator*() const
+        {
+            return value;
+        }
 
-     }
-    T operator*() const
-    {
-       return value;
-     }
+        iterator &operator++()
+        {
+
+            ++value;
+            return *this;
+        }
 
     };
 
-    int getA(){
-      return A;
-    }
+public:
 
-    auto begin() const{
-      return iterator(A);
-    }
-    auto end() const{
-      return iterator(B);
-     }
+    range(T from, T to) : _start(from), _end(to) {}  
 
-  };
 
-  // int main (){
 
-  //   range<int> r = range<int>(1,5);
-  //   for(int i : r){
-  //     cout << i;
-  //   }
 
-  };
- 
+		iterator begin() const {
+			return iterator(_start);
+		}
+
+		iterator end() const {
+			return iterator(_end);
+		} 
+}; // class
+
+
+
+} // namespace itertools

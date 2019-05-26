@@ -1,63 +1,66 @@
 #include <iostream>
 #include <utility>
-#pragma once
 
-using namespace std;
+//NameSpace for a Tasks
+namespace itertools {
+    
+    template <typename T1, typename T2> 
+    class zip {
+    
+    private: // private variables and functions
+        T1 iterable_A;
+        T2 iterable_B;
 
-namespace itertools{
-
-    // print the pair
-    template<typename R1,typename R2>
-    ostream & operator<< (ostream & output, const pair<R1,R2> &pair){
-    output << pair.first << ',' << pair.second;
-    return output;
-    }
-    //
-
-  template<class CONTAINER_1,class CONTAINER_2>
-  class zip{
-
-      CONTAINER_1 A1;
-      CONTAINER_2 A2;
-
-      public:
-        zip(CONTAINER_1 a,CONTAINER_2 b) : A1(a),A2(b){}
-
-        template<typename E1,typename E2>
-        class iterator{
-
-        public:
-
-          E1 A;
-          E2 B;
-
-          iterator(E1 v1,E2 v2) : A(v1),B(v2){}
-
-          auto operator*() const
-          {
-           return pair<decltype(*A),decltype(*B)> (*A,*B);
-          }
-
-          iterator& operator++() // advaced value
-          {
-                ++A;
-                ++B;
-              return *this;
-          }
-
-          bool operator!= (const iterator& temp)
-          {
-            return (A != temp.A) && (B != temp.B);
-          }
-
-        };
-
-        auto begin() const{
-          return iterator <decltype(A1.begin()),decltype(A2.begin())>(A1.begin(), A2.begin());
+    public:
+        zip(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {}
+        
+   auto begin() const{
+          return iterator <decltype(iterable_A.begin()),decltype(iterable_B.begin())>(iterable_A.begin(), iterable_B.begin());
         }
         auto end() const{
-          return iterator <decltype(A1.end()),decltype(A2.end())>(A1.end(), A2.end());
+          return iterator <decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end());
          }
+    template <typename C1, typename C2>
+        class iterator {
 
-  };
-};
+        private:
+            C1 iter_A; // iterator A
+            C2 iter_B; // iterator B
+
+        public:
+            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB)  {}
+
+           iterator<C1,C2>& operator++() {
+               ++iter_A;
+               ++iter_B;
+               return *this;
+ 
+            }
+
+
+            auto operator*() const
+          {
+           return pair< decltype(*iter_A),decltype(*iter_B)> (*iter_A,*iter_B);
+          }
+
+
+            bool operator!= (const iterator& other)
+          {
+            return (iter_A != other.iter_A) && (iter_B != other.iter_B);
+           }
+
+
+         
+        }; // END OF CLASS ITERATOR
+
+
+    };
+    template <typename T,typename E>
+    std::ostream &operator<<(std::ostream &os, const std::pair<T,E> &c){
+    os << c.first << ',' << c.second;
+
+    return os;
+}
+
+
+}

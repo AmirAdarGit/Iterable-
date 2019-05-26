@@ -1,69 +1,71 @@
 #pragma once
 
 #include <iterator>
-#include <iostream>
+#include<iostream>
 
-using namespace std;
+//NameSpace for a Tasks
+namespace itertools {
+    
+    template <typename T1, typename T2> 
+    class chain {
+    
+    private: // private variables and functions
+        T1 iterable_A;
+        T2 iterable_B;
 
-namespace itertools{
+    public:
+        chain(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {}
+        
+    auto begin()const{ 
+        return  iterator<decltype(iterable_A.begin()),decltype(iterable_B.begin())>(iterable_A.begin(), iterable_B.begin()); }  // iteratable object
 
-  template <typename first_container,typename second_container>
-  class chain{
-
-  first_container A1; // iterator for first type
-  second_container A2; // iterator for second type
-
-  public:
-
-    chain(first_container a,second_container b) : A1(a),A2(b){}
-
-
-    template<typename E1,typename E2>
-    class iterator{
-    public :
-
-    E1 A; // first iterator
-    E2 B; // second iterator
-
-    int position; // 0 for the first range and 1 for the second
-
-    iterator(E1 val1,E2 val2) : A(val1),B(val2),position(0){}
-
-    iterator& operator++() // advaced value
-    {
-        if(position == 0)
-          ++A;
-        else
-          ++B;
-        return *this;
-    }
-
-        auto operator*() const
-     {
-             if(position == 0)
-                 return *A;
-             else
-                 return *B;
-    }
-
-    bool operator!= (const iterator& temp)
-    {
-      if (position == 0 && (*A == *(temp.A))) // continue to the next range
-           position = 1;
-      if(position == 0)
-      return A != temp.A;
-      else
-      return B != temp.B;
-     }
-
-    };
-
-    auto begin() const{
-       return iterator<decltype(A1.begin()),decltype(A2.begin())>(A1.begin(), A2.begin()); // iteratable object
-    }
     auto end() const{
-       return iterator<decltype(A1.end()),decltype(A2.end())>(A1.end(), A2.end()); // iteratable object
-    }
+        return iterator<decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end()); }  // iteratable object  
+ 
+    template <typename C1, typename C2>
+        class iterator {
 
-  };
-};
+        private:
+            C1 iter_A; // iterator A
+            C2 iter_B; // iterator B
+         bool checkKind;
+
+        public:
+            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB), checkKind(true)  {}
+
+           iterator<C1,C2>& operator++() {
+                if(checkKind){
+                    ++iter_A;
+                }else {
+                    ++iter_B;
+                }
+                return *this;
+            }
+
+
+            decltype(*iter_A) operator*() const {
+
+                if(checkKind){
+                    return *iter_A;
+                }else {
+                    return *iter_B;
+                }
+            }
+
+            bool operator!=(iterator<C1,C2>  it){
+                if(checkKind && !(iter_A != it.iter_A)){
+                    checkKind = false;
+                }
+                if(checkKind){
+                    return iter_A != it.iter_A;
+                }else{
+                    return iter_B != it.iter_B;
+                }
+            }
+
+         
+        }; // END OF CLASS ITERATOR
+
+	};
+
+}

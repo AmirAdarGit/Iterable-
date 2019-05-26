@@ -2,83 +2,76 @@
 
 #include <utility>
 #include <assert.h>
+#include <iostream>
 
-// print the pair
-// taken from zip.hpp and present the same idea
+//NameSpace for a Tasks
+namespace itertools {
 
+    bool temp = false;
+    template <typename T1, typename T2> 
+    class product {
+    
+    private: // private variables and functions
+        T1 iterable_A;
+        T2 iterable_B;
 
-
-using namespace std;
-
-namespace itertools{
-
-
-  bool flag = false; // variable that pointing on the B iterator length
-
-
-  template<typename CONTAINER_1,typename CONTAINER_2>
-  class product{
-
-          CONTAINER_1 A1;
-          CONTAINER_2 A2;
-
-          public:
-
-            product(CONTAINER_1 a,CONTAINER_2 b) : A1(a),A2(b) {
-              flag = false;
-              if(!(b.begin() != b.end())) // private check for b iterator
-              flag = true;
+    public:
+        product(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {
+              temp = false;
+              if(!(end.begin() != end.end())) 
+              temp = true;
             }
+        
+        
+   auto begin() const {
+              return iterator<decltype(iterable_A.begin()),decltype(iterable_B.begin())>(iterable_A.begin(), iterable_B.begin());
+             }
+            auto end() const {
+              return iterator<decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end());
+             }
+    template <typename C1, typename C2>
+        class iterator {
 
-            template<typename E1,typename E2>
-            class iterator{
+        private:
+            C1 iter_A; // iterator A
+            C2 iter_B; // iterator B
+            C2 save_position_B;
+              bool sauv_index;
 
-            public:
+        public:
+            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB) , save_position_B(iter_B),sauv_index(false) {}
 
-              E1 begin_A; // start first
-
-              E2 begin_B; // start second
-
-              E2 temp_begin_B; // back to start with b temp
-
-              bool ready_for_next_round; // sign the position
-
-
-              iterator(E1 v1,E2 v2) : begin_A(v1),begin_B(v2),temp_begin_B(v2),ready_for_next_round(false){}
-
-              auto operator*() const
-              {
-               return pair<decltype(*begin_A),decltype(*begin_B)> (*begin_A,*begin_B);
-              }
-
-              iterator& operator++() { // advaced value
-              if(!ready_for_next_round)
-              ++begin_B;
+         
+              iterator& operator++() {
+              if(!sauv_index)
+              ++iter_B;
               return *this;
               }
 
-              bool operator!= (iterator const & temp)
+             auto operator*() const
               {
-                if ((begin_A != temp.begin_A) && !(begin_B != temp.begin_B)){
-                    ready_for_next_round = true;
-                  }
-                if(ready_for_next_round){
-                  begin_B = temp_begin_B;
-                  ++begin_A;
-                  ready_for_next_round = false;
-                }
-                return (begin_A != temp.begin_A); // check flag --
+               return pair<decltype(*iter_A),decltype(*iter_B)> (*iter_A,*iter_B);
               }
 
-            };
+      
+              bool operator!= (iterator const & other)
+              {
+                if ((iter_A != other.iter_A) && !(iter_B != other.iter_B)){
+                    sauv_index = true;
+                  }
+                if(sauv_index){
+                  iter_B = save_position_B;
+                  ++iter_A;
+                  sauv_index = false;
+                }
+                return (iter_A != other.iter_A && !temp);
+              }
 
-            auto begin() const {
-              return iterator<decltype(A1.begin()),decltype(A2.begin())>(A1.begin(), A2.begin());
-             }
-            auto end() const {
-              return iterator<decltype(A1.end()),decltype(A2.end())>(A1.end(), A2.end());
-             }
+
+         
+        }; // END OF CLASS ITERATOR
 
 
-  };
-};
+    };
+
+}
