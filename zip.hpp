@@ -4,15 +4,15 @@
 //NameSpace for a Tasks
 namespace itertools {
     
-    template <typename T1, typename T2> 
+    template <typename T, typename E> 
     class zip {
     
     private: // private variables and functions
-        T1 iterable_A;
-        T2 iterable_B;
+        T iterable_A;
+        E iterable_B;
 
     public:
-        zip(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {}
+        zip(T start, E end) :  iterable_A(start), iterable_B(end) {}
         
    auto begin() const{
           return iterator <decltype(iterable_A.begin()),decltype(iterable_B.begin())>(iterable_A.begin(), iterable_B.begin());
@@ -20,17 +20,17 @@ namespace itertools {
         auto end() const{
           return iterator <decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end());
          }
-    template <typename C1, typename C2>
+    template <typename C_1, typename C_2>
         class iterator {
 
         private:
-            C1 iter_A; // iterator A
-            C2 iter_B; // iterator B
+            C_1 iter_A; // iterator A
+            C_2 iter_B; // iterator B
 
         public:
-            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB)  {}
+            iterator(C_1 itA , C_2 itB): iter_A(itA) , iter_B(itB)  {}
 
-           iterator<C1,C2>& operator++() {
+           iterator<C_1,C_2>& operator++() {
                ++iter_A;
                ++iter_B;
                return *this;

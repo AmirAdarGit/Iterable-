@@ -9,8 +9,8 @@ template <class T>
 class range
 {
 
-    T _start; // __starting point
-    T _end;   // stopping point.
+    T a; // _aing point
+    T b;   // stopping point.
    
     class iterator
     {
@@ -48,17 +48,17 @@ class range
 
 public:
 
-    range(T from, T to) : _start(from), _end(to) {}  
+    range(T from, T to) : a(from), b(to) {}  
 
 
 
 
 		iterator begin() const {
-			return iterator(_start);
+			return iterator(a);
 		}
 
 		iterator end() const {
-			return iterator(_end);
+			return iterator(b);
 		} 
 }; // class
 

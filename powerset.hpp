@@ -1,14 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-
-
-
 namespace itertools {
-
-    
-
-
 template <typename Iter>
 class powerset {
 
@@ -28,15 +21,11 @@ auto end() const {       return iterator<decltype(Iter_a.begin())>(Iter_a.end(),
 
 template <typename T>
 class iterator {
-
-
 private:
-
 vector<vector<T>> mix(const vector<T> &other){
         vector<vector<T>> mix_combin;
-        vector<T> data_temp;
-        mix_combin.push_back(data_temp);
-
+        vector<T> temp_vals;
+        mix_combin.push_back(temp_vals);
         for (int i = 0; i < other.size(); i++) {
  vector<vector<T>> Temp_mix = mix_combin;
 
@@ -46,7 +35,7 @@ vector<vector<T>> mix(const vector<T> &other){
         return mix_combin;
 }
 
-int length_iter(const T A,const T B){
+int iter_length(const T A,const T B){
         T data = A;
         int temp = 0;
         while(data != B) {  temp++;  ++data;    }
@@ -75,7 +64,7 @@ int value_index;
 
 
 
-iterator(T itA, T itB) : iterable_a(itA), iterable_b(itB), size(length_iter(itA,itB)),value_index(0){}
+iterator(T itA, T itB) : iterable_a(itA), iterable_b(itB), size(iter_length(itA,itB)),value_index(0){}
 
 bool operator!= (const iterator & temp){
         return (value_index != size);

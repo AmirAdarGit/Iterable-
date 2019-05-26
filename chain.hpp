@@ -6,15 +6,15 @@
 //NameSpace for a Tasks
 namespace itertools {
     
-    template <typename T1, typename T2> 
+    template <typename T, typename E> 
     class chain {
     
     private: // private variables and functions
-        T1 iterable_A;
-        T2 iterable_B;
+        T iterable_A;
+        E iterable_B;
 
     public:
-        chain(T1 start, T2 end) :  iterable_A(start), iterable_B(end) {}
+        chain(T start, E end) :  iterable_A(start), iterable_B(end) {}
         
     auto begin()const{ 
         return  iterator<decltype(iterable_A.begin()),decltype(iterable_B.begin())>(iterable_A.begin(), iterable_B.begin()); }  // iteratable object
@@ -22,18 +22,18 @@ namespace itertools {
     auto end() const{
         return iterator<decltype(iterable_A.end()),decltype(iterable_B.end())>(iterable_A.end(), iterable_B.end()); }  // iteratable object  
  
-    template <typename C1, typename C2>
+    template <typename C_1, typename C_2>
         class iterator {
 
         private:
-            C1 iter_A; // iterator A
-            C2 iter_B; // iterator B
+            C_1 iter_A; // iterator A
+            C_2 iter_B; // iterator B
          bool checkKind;
 
         public:
-            iterator(C1 itA , C2 itB): iter_A(itA) , iter_B(itB), checkKind(true)  {}
+            iterator(C_1 itA , C_2 itB): iter_A(itA) , iter_B(itB), checkKind(true)  {}
 
-           iterator<C1,C2>& operator++() {
+           iterator<C_1,C_2>& operator++() {
                 if(checkKind){
                     ++iter_A;
                 }else {
@@ -52,7 +52,7 @@ namespace itertools {
                 }
             }
 
-            bool operator!=(iterator<C1,C2>  it){
+            bool operator!=(iterator<C_1,C_2>  it){
                 if(checkKind && !(iter_A != it.iter_A)){
                     checkKind = false;
                 }
