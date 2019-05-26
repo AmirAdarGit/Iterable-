@@ -26,7 +26,7 @@ namespace itertools{
 
             product(CONTAINER_1 a,CONTAINER_2 b) : A1(a),A2(b) {
               flag = false;
-              if((b.begin() == b.end())) // private check for b iterator
+              if(!(b.begin() != b.end())) // private check for b iterator
               flag = true;
             }
 
