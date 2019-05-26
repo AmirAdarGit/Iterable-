@@ -1,3 +1,3 @@
 # Cpp_5_Itertools
-CPP Task 5  
-Shimon Mimoun && Omer Paz
+Amir adar 302308168
+Lior habani 305257347
